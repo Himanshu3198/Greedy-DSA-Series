@@ -1,37 +1,39 @@
-
-// 402. Remove K Digits
-
 class Solution {
 public:
-     string removeKdigits(string num, int k) {
-        ios_base::sync_with_stdio(false);
-        cin.tie(NULL);
+    string removeKdigits(string num, int k) {
         
-        int n = num.size();
-        stack<char> mystack;
-        //Store the final string in stack
-        for(char c: num)
-        {
-            while(!mystack.empty() && k>0 && mystack.top()>c)
-            {   mystack.pop();      k-=1;   }
+        
+        stack<char>st;
+        
+        for(auto c:num){
             
-            if(!mystack.empty() || c!='0')
-                mystack.push(c);
+            while(st.size()>0 and k>0 and st.top()>c){
+                st.pop();
+                k--;
+            }
+            if(st.size()==0 and c=='0'){
+                continue;
+            }else{
+                st.push(c);
+            }
         }
         
-        //Now remove the largest values from the top of the stack
-        while(!mystack.empty() && k-->0)
-            mystack.pop();
-        if(mystack.empty())
-            return "0";
-        
-        //Now retrieve the number from stack into a string (reusing num)
-        while(!mystack.empty())
-        {
-            num[n-1] = mystack.top();
-            mystack.pop();
-            n-=1;
+        while(!st.empty() and k>0){
+            st.pop();
+            k--;
         }
-        return num.substr(n);
+        
+        string res="";
+        
+        
+        while(!st.empty()){
+            
+            char c=st.top();
+            st.pop();
+            res+=c;
+        }
+        if(res=="") return "0";
+        reverse(res.begin(),res.end());
+        return res;
     }
 };
