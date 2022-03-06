@@ -9,46 +9,48 @@ using namespace std;
 
 
 
-
-int findPlatform(int arr[], int dep[], int n)
-{
-	// Your code here
-	
-	sort(arr,arr+n);
-	sort(dep,dep+n);
-	
-	vector<pair<int,int>> vec;
-	for(int i=0;i<n;i++){
-	    vec.push_back(make_pair(arr[i],dep[i]));
-	}
-	
-	
-	int max_platform=1;
-	int required_platform=1;
-	
-
-
-    int i=1,j=0;
-    while(i<n && j<n){
+   int findPlatform(int arr[], int dep[], int n)
+    {
+    	// Your code here
+    	
+    	
+    	  /* a train will not come on platform until the platfom is free
+    	     so departure time should be less than arrival time
+    	     
+    	     algo : if departure time is greater than current arrival time then
+    	            check for all arrival time and increase the platform required
+    	            when  a departure time become less than arrival time means 
+    	            train is depart and platform is free so reduce platform required */  
+    	  
+    	sort(arr,arr+n);
+    	sort(dep,dep+n);
+    	
+    	
+    	int miniRequired=1;
+    	int needed=1;
+    	
         
-           if(vec[i].first<=vec[j].second){
-               max_platform++;
-               i++;
+           int i=1;
+           int j=0;
+           
+           
+           while(i<n and j<n){
                
-           }
-           else{
-               max_platform--;
-               j++;
+               
+               if(dep[j]>=arr[i]){
+                   i++;
+                   needed++;
+               }else{
+                   
+                   needed--;
+                   j++;
+               }
+               
+               miniRequired=max(needed,miniRequired);
            }
            
-           required_platform=max(required_platform,max_platform);
-           
+           return miniRequired;
     }
-    
-    return required_platform;
-}
-
-
 // { Driver Code Starts.
 // Driver code
 int main()
