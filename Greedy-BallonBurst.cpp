@@ -1,45 +1,27 @@
-// 452. Minimum Number of Arrows to Burst Balloons
-
-#include<bits/stdc++.h>
-using namespace std;
-
-
-// bool sortcol( const vector<int>& v1,
-//                const vector<int>& v2 ) {
-//  return v1[1] < v2[1];
-// }
-
-int solve(vector<vector<int>>&points){
-       sort(points.begin(),points.end());
-    for(int i=0;i<points.size();i++){
-        for(int j=0;j<points[0].size();j++){
-            cout<<points[i][j]<<" ";
-        }
-        cout<<"\n";
+class Solution {
+public:
+       static bool myCmp(const vector<int>& a, const vector<int>& b) {
+        return a[0]== b[0]?a[1]<b[1]:a[0]<b[0];    
     }
-   
-
-    int count=1;
-     int BurstPossible=points[0][1];
-
-
-     for(int i=1;i<points.size();i++){
-
-        if(points[i][0]>BurstPossible){
-              count++;
-            BurstPossible=points[i][1];
-          
+    int findMinArrowShots(vector<vector<int>>& points) {
+     
+         
+        sort(points.begin(),points.end(),myCmp);
+        int res=1;
+        int start=points[0][0],end=points[0][1];
+        for(int i=1;i<points.size();i++){
+            
+            if(end>=points[i][0] && end<=points[i][1]){
+                continue;
+            }
+            else if(end>=points[i][0] && end>=points[i][1]){
+                end=points[i][1];
+                continue;
+            }
+                res++;
+                end=points[i][1];
         }
-        
-     }
-        
-        return count;
-}
-
-int main(){
-
-    vector<vector<int>>vec={ {10,16},{2,8},{1,6},{7,12}};
-
-   cout<< solve(vec)<<"\n";
-    return 0;
-}
+            
+        return res;
+    }
+};
